@@ -17,6 +17,7 @@ DevArena integrates a suite of generative AI tools to provide a unique and insig
 2.  **📜 Code Story Generator**: Transforms code snippets into simple, easy-to-understand narratives, helping users grasp the logic behind the code.
 3.  **📊 Code Summarizer**: Generates a step-by-step execution summary for a piece of code, inspired by Python Tutor, to clarify its operational flow.
 4.  **🖼️ Code-to-Image Visualizer**: Automatically generates a flowchart or architecture diagram from a code snippet, providing a visual representation of its logic.
+5.  **🎵 AI Song Suggester**: A fun AI DJ that suggests the perfect song to match a developer's mood or current task.
 
 ## Tech Stack
 
