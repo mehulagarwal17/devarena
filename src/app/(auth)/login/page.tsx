@@ -25,15 +25,14 @@ export default function LoginPage() {
   const { toast } = useToast();
   
   const handleSignIn = () => {
-    initiateEmailSignIn(auth, email, password);
+    initiateEmailSignIn(auth, email, password, toast);
   };
   
   const handleFingerprintSignIn = () => {
-    toast({
+    initiateAnonymousSignIn(auth, toast, {
       title: 'Simulating Fingerprint Scan',
       description: 'Signing you in with anonymous authentication...',
     });
-    initiateAnonymousSignIn(auth);
   }
 
   return (

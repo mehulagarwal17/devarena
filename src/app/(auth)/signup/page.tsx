@@ -35,15 +35,14 @@ export default function SignupPage() {
         });
       return;
     }
-    initiateEmailSignUp(auth, email, password);
+    initiateEmailSignUp(auth, email, password, toast);
   };
   
   const handleFingerprintSignUp = () => {
-    toast({
+    initiateAnonymousSignIn(auth, toast, {
       title: 'Simulating Fingerprint Registration',
       description: 'Signing you up with anonymous authentication...',
     });
-    initiateAnonymousSignIn(auth);
   }
 
   return (
