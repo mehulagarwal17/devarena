@@ -11,51 +11,39 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/firebase';
-import { initiateEmailSignIn, initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
+import { initiateEmailSignUp, initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
 import { GitBranch, Loader2, Fingerprint } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { useUser } from '@/firebase';
+import { useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 
-export default function LoginPage() {
+
+export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const auth = useAuth();
-  const router = useRouter();
-  const { user, isUserLoading } = useUser();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (user) {
-      router.push('/dashboard');
+  const handleSignUp = () => {
+    if (password !== confirmPassword) {
+        toast({
+            variant: "destructive",
+            title: "Passwords do not match",
+            description: "Please make sure your passwords match.",
+        });
+      return;
     }
-  }, [user, router]);
-
-
-  const handleSignIn = () => {
-    initiateEmailSignIn(auth, email, password);
+    initiateEmailSignUp(auth, email, password);
   };
   
-  const handleFingerprintSignIn = () => {
+  const handleFingerprintSignUp = () => {
     toast({
-      title: 'Simulating Fingerprint Scan',
-      description: 'Signing you in with anonymous authentication...',
+      title: 'Simulating Fingerprint Registration',
+      description: 'Signing you up with anonymous authentication...',
     });
     initiateAnonymousSignIn(auth);
-  }
-
-  if (isUserLoading || user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
-        <div className="flex items-center gap-2">
-          <Loader2 className="w-6 h-6 animate-spin text-primary" />
-          <span className="text-muted-foreground">Loading...</span>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -65,8 +53,10 @@ export default function LoginPage() {
           <div className="flex justify-center items-center mb-4">
             <GitBranch className="w-12 h-12 text-primary" />
           </div>
-          <CardTitle className="font-headline text-3xl">Welcome to DevArena</CardTitle>
-          <CardDescription>Sign in to enter the arena</CardDescription>
+          <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
+          <CardDescription>
+            Join DevArena and start your journey.
+          </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
@@ -92,26 +82,37 @@ export default function LoginPage() {
               className="bg-secondary border-0"
             />
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="bg-secondary border-0"
+            />
+          </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" onClick={handleSignIn}>
-            Sign In
+          <Button className="w-full" onClick={handleSignUp}>
+            Sign Up
           </Button>
 
-          <div className="relative w-full">
+           <div className="relative w-full">
             <Separator className="my-2" />
             <span className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-background/50 px-2 text-xs text-muted-foreground">OR</span>
           </div>
 
-          <Button variant="outline" className="w-full" onClick={handleFingerprintSignIn}>
+          <Button variant="outline" className="w-full" onClick={handleFingerprintSignUp}>
             <Fingerprint className="mr-2 h-4 w-4" />
-            Sign in with Fingerprint
+            Register with Fingerprint
           </Button>
 
           <p className="text-xs text-center text-muted-foreground pt-2">
-            Don't have an account?{' '}
-            <Link href="/signup" className="underline font-medium text-primary hover:text-primary/80">
-              Sign up
+            Already have an account?{' '}
+            <Link href="/login" className="underline font-medium text-primary hover:text-primary/80">
+              Sign in
             </Link>
           </p>
         </CardFooter>
